@@ -1,24 +1,11 @@
 # kintone-world-cup
 
 ## Project setup
-```
-yarn install
-```
+- 竞猜首页
+- 我的竞猜
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+# 规则
+- 首页：
+  - 获取3条最近未开始的比赛 进行投票
+  - 比赛倒计时
+  - 
