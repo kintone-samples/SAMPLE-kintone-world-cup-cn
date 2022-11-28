@@ -32,7 +32,6 @@ module.exports = defineConfig({
     extract: false,
   },
 
-  //todo 需要判断是否是否是production
   chainWebpack: (config) => {
     //无需构建html静态资源
     config.plugins.delete("html");
@@ -62,5 +61,5 @@ module.exports = defineConfig({
     },
   },
 
-  lintOnSave: false
+  lintOnSave: false,
 });
