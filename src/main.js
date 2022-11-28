@@ -1,4 +1,9 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from "vue";
+import App from "./App.vue";
 
-createApp(App).mount('#app')
+kintone.events.on("portal.show", (event) => {
+  const myContainer = kintone.portal.getContentSpaceElement();
+  const app = createApp(App);
+  app.mount(myContainer);
+  return event;
+});
