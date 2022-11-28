@@ -14,8 +14,8 @@
 </template>
 <script setup>
 import { ref } from 'vue'
-import home from "@/views/Home.vue"
-import mine from "@/views/Mine.vue"
+import home from "@/views/HomeView.vue"
+import mine from "@/views/MineView.vue"
 
 const activeName = ref('home')
 

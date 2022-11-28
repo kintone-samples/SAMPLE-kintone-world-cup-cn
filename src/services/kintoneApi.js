@@ -9,6 +9,13 @@ import {
 
 const client = new KintoneRestAPIClient();
 
+const dataConvert = (record) => {
+  Object.keys(record).forEach((key) => {
+    record[key] = record[key].value;
+  });
+  return record;
+};
+
 //获取用户已经生效的总积分
 export const GetEffectiveSocre = async () => {
   const app = appList.users;
@@ -43,6 +50,27 @@ export const GetFreezeScore = async () => {
         freezeScore += Number(value[userChipInField.Chip_in_score].value);
       }
       return freezeScore;
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+//获取登陆用户的投注记录
+export const GetChipInList = async () => {
+  const app = appList.userChipIn;
+  try {
+    const params = {
+      app,
+      query: `${userChipInField.Create_user} in (LOGINUSER())`,
+    };
+    const resp = await client.record.getRecords(params);
+    if (resp.records.length > 0) {
+      return resp.records.map((record) => {
+        return dataConvert(record);
+      });
     } else {
       return null;
     }
@@ -107,7 +135,7 @@ export const GetMatchInfo = async (matchId) => {
     };
     const resp = await client.record.getRecords(params);
     if (resp.records.length > 0) {
-      return resp.records[0];
+      return dataConvert(resp.records[0]);
     } else {
       return null;
     }
@@ -151,7 +179,9 @@ export const GetMatchList = async () => {
     };
     const resp = await client.record.getRecords(params);
     if (resp.records.length > 0) {
-      return resp.records;
+      return resp.records.map((record) => {
+        return dataConvert(record);
+      });
     } else {
       return null;
     }
