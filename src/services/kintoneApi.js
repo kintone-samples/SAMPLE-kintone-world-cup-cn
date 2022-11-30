@@ -6,6 +6,7 @@ import {
   userChipInField,
   scoreField,
 } from "@/config";
+import { DateTime } from "luxon";
 
 const client = new KintoneRestAPIClient();
 
@@ -77,6 +78,55 @@ export const GetChipInList = async () => {
   } catch (err) {
     console.log(err);
   }
+};
+
+//获取首页显示的投注信息（包含允许显示的投注信息及该场次用户的投注信息）
+export const GetHomeChipList = async () => {
+  const app = appList.matchInfo;
+  const chipInapp = appList.userChipIn;
+  const params = {
+    app,
+    query: `${matchInfoField.Show} in ("展示")`,
+  };
+  const { records } = await client.record.getRecords(params);
+  const newRecords = records.map((record) => {
+    return dataConvert(record);
+  });
+
+  const localString = DateTime.local().toUnixInteger();
+
+  for (const record of newRecords) {
+    const matchId = record[matchInfoField.Match_id];
+    const deadLineString = DateTime.fromISO(
+      record[matchInfoField.Deadline]
+    ).toUnixInteger();
+    if (localString > deadLineString) {
+      record.isExpire = true;
+    }
+    //获取该场次登陆用户的投注信息
+
+    const params = {
+      app: chipInapp,
+      query: `${userChipInField.Create_user} in (LOGINUSER()) and ${userChipInField.Match_id} = ${matchId} limit 1`,
+    };
+    const resp = await client.record.getRecords(params);
+    let userChipInList = {
+      chipInScore: "",
+      chipInType: "",
+      chipInShow: { win: false, fu: false, ping: false },
+    };
+    if (resp.records.length > 0) {
+      const temp = resp.records.map((record) => {
+        return dataConvert(record);
+      });
+      // console.log(temp[0]);
+      userChipInList.chipInScore = temp[0][userChipInField.Chip_in_score];
+      userChipInList.chipInType = temp[0][userChipInField.Chip_in_type];
+    }
+    record.userChipInList = userChipInList;
+  }
+  console.log(records);
+  return records;
 };
 
 //获取用户当前可使用积分（总积分-未生效投注历史即积分结果为0的记录）

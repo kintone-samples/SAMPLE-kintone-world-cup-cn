@@ -20,6 +20,7 @@ export const matchInfoField = {
   ScoreA: "ScoreA",
   ScoreB: "ScoreB",
   Result: "Result",
+  Show: "Show",
 };
 
 export const teamsField = {
