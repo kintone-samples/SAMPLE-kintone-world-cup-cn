@@ -5,6 +5,7 @@ import {
   usersField,
   userChipInField,
   scoreField,
+  picField,
 } from "@/config";
 import { DateTime } from "luxon";
 
@@ -226,6 +227,27 @@ export const GetMatchList = async () => {
   try {
     const params = {
       app,
+    };
+    const resp = await client.record.getRecords(params);
+    if (resp.records.length > 0) {
+      return resp.records.map((record) => {
+        return dataConvert(record);
+      });
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+//获取轮博图
+export const GetPicList = async () => {
+  const app = appList.pic;
+  try {
+    const params = {
+      app,
+      query: `${picField.Show} in ("显示")`,
     };
     const resp = await client.record.getRecords(params);
     if (resp.records.length > 0) {

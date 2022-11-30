@@ -1,6 +1,15 @@
 <template>
+  <el-carousel :interval="4000" type="card" height="200px">
+    <el-carousel-item v-for="pic in picList" :key="pic.$id">
+      <el-image style="width: 200px; height: 200px" :src="pic.Link" fit="cover" />
+    </el-carousel-item>
+  </el-carousel>
   <el-row :gutter="20" v-for="item in chipInList" :key="item.Match_id">
-    <el-col :span="5">{{ item.TeamA_name }} vs {{ item.TeamB_name }}</el-col>
+    <el-col :span="5">{{ item.TeamA_name }}
+      <el-image style="width: 40px; height: 30px" :src="item.FlagA" fit="cover" />
+      vs {{ item.TeamB_name }}
+      <el-image style="width: 40px; height: 30px" :src="item.FlagB" fit="cover" />
+    </el-col>
     <el-col :span="5">{{ item.Match_start_time }}</el-col>
     <el-col :span="2">胜赔率{{ item.OddsA }}</el-col>
     <el-col :span="2">平赔率{{ item.OddsB }}</el-col>
@@ -48,7 +57,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { UserChipIn, GetHomeChipList } from "@/services/kintoneApi"
+import { UserChipIn, GetHomeChipList, GetPicList } from "@/services/kintoneApi"
 import {
   matchInfoField,
   userChipInField,
@@ -60,9 +69,14 @@ const typeMapping = { "sheng": "A胜B", "fu": "A负B", "ping": "A平B" }
 
 const chipInList = ref([])
 const input = ref(10)
+const picList = ref([])
 
 GetHomeChipList().then((resp) => {
   chipInList.value = resp
+})
+
+GetPicList().then((resp) => {
+  picList.value = resp
 })
 
 const closePop = (item) => {
