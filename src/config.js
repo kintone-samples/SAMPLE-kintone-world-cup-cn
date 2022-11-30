@@ -47,6 +47,8 @@ export const userChipInField = {
 export const scoreField = {
   User: "User",
   Score: "Score",
+  Match_id: "Match_id",
+  Type: "Type",
   Create_time: "Create_time",
   Update_time: "Update_time",
 };

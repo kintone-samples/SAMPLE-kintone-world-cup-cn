@@ -5,9 +5,12 @@
 
 <script setup>
 import { ref } from 'vue'
-import { GetLeftScore } from "@/services/kintoneApi"
+import { storeToRefs } from 'pinia'
+import { useUserStore } from '@/store/user'
+const userStore = useUserStore();
+const { myScore } = storeToRefs(userStore)
+userStore.getLeftScore()
 // eslint-disable-next-line no-undef
 const userInfo = ref(kintone.getLoginUser())
-const myScore = ref(0)
-GetLeftScore().then(resp => { myScore.value = resp })
+
 </script>

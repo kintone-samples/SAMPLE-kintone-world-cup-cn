@@ -13,7 +13,7 @@
     <el-table-column prop="TeamA_name" label="队伍A" width="180" />
     <el-table-column prop="TeamB_name" label="队伍B" width="180" />
     <el-table-column label="投注" width="180">
-      <template #default="scope">
+      <template #default>
         <el-input v-model="chipInScore" />
       </template>
     </el-table-column>
@@ -28,40 +28,31 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
-import { GetEffectiveSocre, GetFreezeScore, GetMatchInfo, GetLeftScore, GetEffectiveScoreList, GetFreezeScoreList, UserChipIn, GetMatchList, GetChipInList } from "@/services/kintoneApi"
+import { ref } from 'vue'
+import { UserChipIn, GetMatchList, GetChipInList } from "@/services/kintoneApi"
 import {
   userChipInField,
 } from "@/config";
-// GetEffectiveSocre().then((resp) => { console.log(resp) })
-// GetFreezeScore().then((resp) => { console.log(resp) })
-// GetLeftScore().then((resp) => { console.log(resp) })
-// GetUserScore().then((resp) => { console.log(resp) })
-// GetMatchInfo(123).then((resp) => { console.log(resp) })
-// GetFreezeScore().then((resp) => { console.log(resp) })
-// GetEffectiveScoreList().then((resp) => { console.log(resp) })
-// GetFreezeScoreList().then((resp) => { console.log(resp) })
-// const params = {
-//   chipInScore: 10, matchId: 123, ChipInType:
-//     "A平B"
-// };
-// UserChipIn(params).then((resp) => { console.log(resp) })
-// GetMatchList().then((resp) => { console.log(resp) })
+
+import { useUserStore } from '@/store/user'
+const userStore = useUserStore();
+const typeMapping = { "胜": "A胜B", "负": "A负B", "平": "A平B" }
+
 const chipInList = ref([])
 GetChipInList().then((resp) => {
-  console.log("chipInList:", resp)
+  // console.log("chipInList:", resp)
   chipInList.value = resp
 })
 
 const matchList = ref([])
 GetMatchList().then((resp) => {
-  console.log("matchList:", resp)
+  // console.log("matchList:", resp)
   matchList.value = resp
 })
 
 const chipInScore = ref('')
 
-const handle = (e, index, row) => {
+const handle = async (e, index, row) => {
   console.log(row)
   let type = ''
   console.log(e.target.tagName)
@@ -70,7 +61,7 @@ const handle = (e, index, row) => {
   } else {
     type = e.target.innerHTML
   }
-  const typeMapping = { "胜": "A胜B", "负": "A负B", "平": "A平B" }
+
   const params = {
     chipInScore: chipInScore.value,
     matchId: row[userChipInField.Match_id],
@@ -78,8 +69,9 @@ const handle = (e, index, row) => {
       typeMapping[type]
   };
   console.log(params)
-  UserChipIn(params).then((r) => {
+  UserChipIn(params).then(async (r) => {
     if (r) {
+      userStore.getLeftScore()
       GetChipInList().then((resp) => {
         chipInList.value = resp
       })
