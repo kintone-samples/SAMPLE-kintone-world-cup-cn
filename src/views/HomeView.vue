@@ -53,11 +53,20 @@
       </el-popover>
     </el-col>
   </el-row>
+
+  <div v-for="item in gameList" :key="item.$id">
+    <div>场次：{{ item.TeamA_name }}
+      <el-image style="width: 40px; height: 30px" :src="item.FlagA" fit="cover" />
+      vs {{ item.TeamB_name }}
+      <el-image style="width: 40px; height: 30px" :src="item.FlagB" fit="cover" />
+      {{ item.ScoreA }}:{{ item.ScoreB }}
+    </div>
+  </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { UserChipIn, GetHomeChipList, GetPicList } from "@/services/kintoneApi"
+import { UserChipIn, GetHomeChipList, GetPicList, GetGameList } from "@/services/kintoneApi"
 import {
   matchInfoField,
   userChipInField,
@@ -70,6 +79,7 @@ const typeMapping = { "sheng": "A胜B", "fu": "A负B", "ping": "A平B" }
 const chipInList = ref([])
 const input = ref(10)
 const picList = ref([])
+const gameList = ref([])
 
 GetHomeChipList().then((resp) => {
   chipInList.value = resp
@@ -77,6 +87,11 @@ GetHomeChipList().then((resp) => {
 
 GetPicList().then((resp) => {
   picList.value = resp
+})
+
+GetGameList().then((resp) => {
+  console.log(resp)
+  gameList.value = resp
 })
 
 const closePop = (item) => {
@@ -116,6 +131,7 @@ const handle = async (item, type) => {
     UserChipIn(params).then(async (r) => {
       if (r) {
         userStore.getLeftScore()
+        userStore.getChipInList()
         GetHomeChipList().then((resp) => {
           chipInList.value = resp
         })

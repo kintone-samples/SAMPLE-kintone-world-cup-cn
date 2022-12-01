@@ -16,22 +16,15 @@
 import { ref } from 'vue'
 import home from "@/views/HomeView.vue"
 import mine from "@/views/MineView.vue"
+import { useUserStore } from '@/store/user'
+const userStore = useUserStore();
+userStore.init()
 
 const activeName = ref('home')
-
 const handleClick = (tab, event) => {
-  console.log(tab, event)
+  // console.log(tab, event)
 }
 </script>
 <style>
-.demo-tabs>.el-tabs__content {
-  padding: 32px;
-  color: #6b778c;
-  font-size: 32px;
-  font-weight: 600;
-}
-
-.common-layout {
-  background-color: white;
-}
+@import '@/assets/app.css';
 </style>

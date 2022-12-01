@@ -4,7 +4,6 @@ import {
   matchInfoField,
   usersField,
   userChipInField,
-  scoreField,
   picField,
 } from "@/config";
 import { DateTime } from "luxon";
@@ -126,7 +125,7 @@ export const GetHomeChipList = async () => {
     }
     record.userChipInList = userChipInList;
   }
-  console.log(records);
+  // console.log(records);
   return records;
 };
 
@@ -136,63 +135,6 @@ export const GetLeftScore = async () => {
   const freezeScore = await GetFreezeScore();
   const leftScore = effectiveSocre - freezeScore;
   return leftScore;
-};
-
-//获取用户积分履历（已经生效）
-export const GetEffectiveScoreList = async () => {
-  const app = appList.score;
-  try {
-    const params = {
-      app,
-      query: `${scoreField.User} in (LOGINUSER())`,
-    };
-    const resp = await client.record.getRecords(params);
-    if (resp.records.length > 0) {
-      return resp.records;
-    } else {
-      return null;
-    }
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-//获取用户冻结的积分履历
-export const GetFreezeScoreList = async () => {
-  const app = appList.score;
-  try {
-    const params = {
-      app,
-      query: `${scoreField.User} in (LOGINUSER())`,
-    };
-    const resp = await client.record.getRecords(params);
-    if (resp.records.length > 0) {
-      return resp.records;
-    } else {
-      return null;
-    }
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-//获取指定场次赔率等信息
-export const GetMatchInfo = async (matchId) => {
-  const app = appList.matchInfo;
-  try {
-    const params = {
-      app,
-      query: `${matchInfoField.Match_id} = ${matchId}`,
-    };
-    const resp = await client.record.getRecords(params);
-    if (resp.records.length > 0) {
-      return dataConvert(resp.records[0]);
-    } else {
-      return null;
-    }
-  } catch (err) {
-    console.log(err);
-  }
 };
 
 //用户进行下注 需要先判断用户可使用的积分
@@ -221,12 +163,13 @@ export const UserChipIn = async (params) => {
   }
 };
 
-//获取比赛列表
-export const GetMatchList = async () => {
-  const app = appList.matchInfo;
+//获取轮博图
+export const GetPicList = async () => {
+  const app = appList.pic;
   try {
     const params = {
       app,
+      query: `${picField.Show} in ("显示")`,
     };
     const resp = await client.record.getRecords(params);
     if (resp.records.length > 0) {
@@ -241,13 +184,34 @@ export const GetMatchList = async () => {
   }
 };
 
-//获取轮博图
-export const GetPicList = async () => {
-  const app = appList.pic;
+//获取比分
+export const GetGameList = async () => {
+  const app = appList.matchInfo;
   try {
     const params = {
       app,
-      query: `${picField.Show} in ("显示")`,
+      query: `${matchInfoField.ScoreA} !="" limit 3`,
+    };
+    console.log(params);
+    const resp = await client.record.getRecords(params);
+    if (resp.records.length > 0) {
+      return resp.records.map((record) => {
+        return dataConvert(record);
+      });
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+//获取比赛列表
+export const GetMatchList = async () => {
+  const app = appList.matchInfo;
+  try {
+    const params = {
+      app,
     };
     const resp = await client.record.getRecords(params);
     if (resp.records.length > 0) {
