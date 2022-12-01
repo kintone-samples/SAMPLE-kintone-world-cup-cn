@@ -8,7 +8,7 @@
 }
 #container{
   width: 100%;
-  height: 1500px;
+  height: 1100px;
   margin: 0 auto;
   position:relative; 
   background-image: linear-gradient(rgba(60,116,255,0),rgb(10,62,178));
@@ -102,14 +102,6 @@
 }
 
 
-#left_side{  
-  top:0px;  
-  left:0px;  
-}   
-
-#right_side{  
-  /* width: 80%; */
-}  
 
 .content_title img{
   height:20px;
@@ -171,12 +163,14 @@
   display: inline-block;
   border-radius: 10px;
   background: rgba(6, 50, 138, 0.6);
+  vertical-align: middle;
 }
 .content_vote {
   display: inline-block;
   width: 100%;
   line-height: 180%;
   color:#fff;  
+  font-size: 20px;
 }
 .content_vote ul {
   list-style-type: none;
@@ -190,10 +184,7 @@
   text-align: left;
 }
 
-.match_time {
-  width: 100px;
-  text-align: left;
-}
+
 
 .content_vote ul li .country {
   display: inline-block;
@@ -202,27 +193,32 @@
   padding-left: 10px;
   vertical-align: top;
 }
+.vote_vs {
+  font-size: 40px;
+  font-weight: 900;
+  line-height: 120%;
+  padding: 0 10px;
+  vertical-align: top;
+}
 .vs {
   font-size: 30px;
   font-weight: 900;
   line-height: 120%;
   padding: 0 10px;
   vertical-align: top;
-
 }
-.content_vote ul .voted{
+.voted{
   display: inline-block;
   text-align: right;
-  width: 350px;
 }
-.content_vote ul .voted span {
+.voted span { 
   display: inline-block;
-  width: 100px;
+  width: 120px;
   color: gray;
   border-radius: 5px;
   background-color: gainsboro;
   text-align: center;
-  padding-left: 0;
+  font-size: 14px;
 }
 .content_vote ul .vote_button{
   display: inline-block;
