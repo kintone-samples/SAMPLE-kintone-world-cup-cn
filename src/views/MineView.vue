@@ -1,25 +1,46 @@
 <template>
-  <div>用户名：{{ userInfo.name }}</div>
-  <div>我的积分：{{ myScore }}</div>
-  <div v-for="item in chipListShow" :key="item.$id">
-    <div>场次：{{ item.teamInfo.TeamA_name }} vs{{ item.teamInfo.TeamB_name }} </div>
-    <div>积分变化：{{ item.scoreChange }}</div>
-    <div>类别：{{ item.type }}</div>
+  <div class="mine">
+    <div id="container">
+      <div class="myscore">我的积分：<span>{{ myScore }}</span></div>
+      <div class="gaia-argoui-widget">
+        <div class="gaia-argoui-widget-header gaia-argoui-widget-header-icon"
+          style="background-image: url('https://static.cybozu.com/contents/k/image/argo/uiparts/widget/spaces_56.png'); background-position: left top; background-repeat: no-repeat;">
+          <h3 class="gaia-argoui-widget-title">积分变化记录</h3>
+        </div>
+        <el-table :data="chipListShow" stripe style="width: 50%" max-height="800">
+          <el-table-column label="场次" width="180">
+            <template #default="scope">
+              <div style="display: flex; align-items: center">
+                {{ scope.row.teamInfo.TeamA_name }} vs{{ scope.row.teamInfo.TeamB_name }}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="scoreChange" label="积分变化" width="180" />
+          <el-table-column prop="type" label="类别" />
+        </el-table>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+// import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/store/user'
 const userStore = useUserStore();
 const { myScore, chipListShow } = storeToRefs(userStore)
 
-
-
-
-//投注记录显示 场次 -  投注 -  回报 （大于0时显示，小于0）
 // eslint-disable-next-line no-undef
-const userInfo = ref(kintone.getLoginUser())
+// const userInfo = ref(kintone.getLoginUser())
 
 </script>
+<style>
+.myscore {
+  padding: 20px 0 20px 5px;
+  font-size: 40px;
+}
+
+.myscore span {
+  color: #fe421d
+}
+</style>

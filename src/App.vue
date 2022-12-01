@@ -1,15 +1,15 @@
 <template>
-  <div class="common-layout">
-    <el-main id="container">
-      <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-        <el-tab-pane label="世界杯" name="home">
-          <home />
-        </el-tab-pane>
-        <el-tab-pane label="我的信息" name="mine">
-          <mine />
-        </el-tab-pane>
-      </el-tabs>
-    </el-main>
+  <div class="main">
+    <!-- <el-main> -->
+    <el-tabs type="border-card" v-model="activeName" class="demo-tabs" @tab-click="handleClick">
+      <el-tab-pane label="世界杯" name="home">
+        <home />
+      </el-tab-pane>
+      <el-tab-pane label="我的信息" name="mine">
+        <mine />
+      </el-tab-pane>
+    </el-tabs>
+    <!-- </el-main> -->
   </div>
 </template>
 <script setup>
@@ -27,5 +27,9 @@ const handleClick = (tab, event) => {
 }
 </script>
 <style>
-@import '@/assets/app.css';
+.main {
+  margin: 15px 15px 0;
+}
+
+/* @import '@/assets/app.css'; */
 </style>
