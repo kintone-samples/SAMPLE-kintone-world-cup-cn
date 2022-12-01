@@ -73,7 +73,7 @@ export const GetChipInList = async () => {
         return dataConvert(record);
       });
     } else {
-      return null;
+      return [];
     }
   } catch (err) {
     console.log(err);
@@ -103,6 +103,9 @@ export const GetHomeChipList = async () => {
     if (localString > deadLineString) {
       record.isExpire = true;
     }
+    record[matchInfoField.Match_start_time] = DateTime.fromISO(
+      record[matchInfoField.Match_start_time]
+    ).toFormat("MM-dd HH:mm");
     //获取该场次登陆用户的投注信息
 
     const params = {
@@ -190,7 +193,7 @@ export const GetGameList = async () => {
   try {
     const params = {
       app,
-      query: `${matchInfoField.ScoreA} !="" limit 3`,
+      query: `${matchInfoField.ScoreA} !="" limit 4`,
     };
     console.log(params);
     const resp = await client.record.getRecords(params);

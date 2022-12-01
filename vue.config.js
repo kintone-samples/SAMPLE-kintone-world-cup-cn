@@ -45,11 +45,14 @@ module.exports = defineConfig({
     const fontsRule = config.module.rule("fonts");
     fontsRule.set("generator", {});
     fontsRule.set("type", "asset/inline").end();
-    if (process.env.NODE_ENV === "production") {
-      config
-        .plugin("kintoneUploader")
-        .use(KintoneUploaderWebpackPlugin, [envOptions]);
-    }
+    const imagesRule = config.module.rule("images");
+    imagesRule.set("generator", {});
+    imagesRule.set("type", "asset/inline").end();
+    // if (process.env.NODE_ENV === "production") {
+    //   config
+    //     .plugin("kintoneUploader")
+    //     .use(KintoneUploaderWebpackPlugin, [envOptions]);
+    // }
   },
 
   configureWebpack: {

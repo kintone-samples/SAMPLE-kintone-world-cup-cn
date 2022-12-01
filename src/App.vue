@@ -1,11 +1,11 @@
 <template>
   <div class="common-layout">
-    <el-main>
+    <el-main id="container">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-        <el-tab-pane label="Home" name="home">
+        <el-tab-pane label="世界杯" name="home">
           <home />
         </el-tab-pane>
-        <el-tab-pane label="Mine" name="mine">
+        <el-tab-pane label="我的信息" name="mine">
           <mine />
         </el-tab-pane>
       </el-tabs>
@@ -19,6 +19,7 @@ import mine from "@/views/MineView.vue"
 import { useUserStore } from '@/store/user'
 const userStore = useUserStore();
 userStore.init()
+
 
 const activeName = ref('home')
 const handleClick = (tab, event) => {
