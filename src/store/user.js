@@ -13,7 +13,22 @@ export const useUserStore = defineStore("user", {
     };
   },
 
-  getters: {},
+  getters: {
+    chipListShow(state) {
+      return state.chipInList.map((record) => {
+        record.scoreChange = record.Score_result;
+        if (record.Score_result == 0) {
+          record.scoreChange = Number(record.Chip_in_score) * -1;
+          record.type = "下注";
+        } else if (record.Score_result < 0) {
+          record.type = "下注";
+        } else {
+          record.type = "赢得";
+        }
+        return record;
+      });
+    },
+  },
 
   actions: {
     async init() {
