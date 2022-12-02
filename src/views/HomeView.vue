@@ -5,7 +5,7 @@
       <div class="home">
         <header class="top">
           <div class="top_left">
-            <img src="https://cndevdemo.oss-cn-shanghai.aliyuncs.com/fifa/logo.png">
+            <img :src="pics.logo">
             <div class="top_time">{{ lan.matchTime }}</div>
             <div class="top_countdown">
               <div>
@@ -22,7 +22,7 @@
         <div class="center">
           <div class="main-left">
             <div id="vote" class="vote">
-              <div class="content_title"><img src="https://cndevdemo.oss-cn-shanghai.aliyuncs.com/fifa/title_vote.png">
+              <div class="content_title"><img :src="pics.vote">
               </div>
               <div class="content_vote_bg">
                 <el-row class="content_vote" :gutter="20" v-for="item in chipInList" :key="item.Match_id">
@@ -31,12 +31,12 @@
                   <el-col :span="8">
                     <div style="display:inline-block;line-height: 120%;text-align: center;width:70px;">
                       <el-image class="flag" :src="item.FlagA" fit="contain" /><br />{{
-                          item.TeamA_name
+                          teamNameLang(item.TeamA_name)
                       }}
                     </div> <span class="vote_vs">vs</span>
                     <div style="display:inline-block;line-height: 120%;text-align: center;width:70px;"><el-image
                         class="flag" :src="item.FlagB" fit="contain" /><br />{{
-                            item.TeamB_name
+                            teamNameLang(item.TeamB_name)
                         }}</div>
                   </el-col>
                   <el-col :span="10">
@@ -53,7 +53,7 @@
                           }}</el-button>
                         </div>
                         <template #reference>
-                          <el-button type="" @click="showPop(item, 'sheng')">{{ lan.win }}<br /><span class="odds">：{{
+                          <el-button type="" @click="showPop(item, 'sheng')">{{ lan.win }}<span class="odds">:{{
                               item.OddsA
                           }}</span></el-button>
                         </template>
@@ -69,7 +69,7 @@
                           }}</el-button>
                         </div>
                         <template #reference>
-                          <el-button @click="showPop(item, 'ping')">{{ lan.draw }}<br /><span class="odds">：{{
+                          <el-button @click="showPop(item, 'ping')">{{ lan.draw }}<span class="odds">:{{
                               item.OddsC
                           }}</span></el-button>
                         </template>
@@ -85,7 +85,7 @@
                           }}</el-button>
                         </div>
                         <template #reference>
-                          <el-button @click="showPop(item, 'fu')">{{ lan.loss }}<br /><span class="odds">：{{ item.OddsB
+                          <el-button @click="showPop(item, 'fu')">{{ lan.loss }}<span class="odds">:{{ item.OddsB
                           }}</span></el-button>
                         </template>
                       </el-popover>
@@ -98,8 +98,7 @@
 
             <div class="content">
               <div class="left_side">
-                <div class="content_title"><img
-                    src="https://cndevdemo.oss-cn-shanghai.aliyuncs.com/fifa/title_headlines_news.png">
+                <div class="content_title"><img :src="pics.news">
                 </div>
                 <el-carousel :interval="4000" arrow="always" indicator-position="none">
                   <el-carousel-item v-for="pic in picList" :key="pic.$id">
@@ -108,8 +107,7 @@
                 </el-carousel>
               </div>
               <div class="right_side">
-                <div class="content_title"><img
-                    src="https://cndevdemo.oss-cn-shanghai.aliyuncs.com/fifa/title_integral.png">
+                <div class="content_title"><img :src="pics.integral">
                 </div>
                 <div class="content_integral">
                   <ul style="padding:0;margin:0;text-align: left;list-style-type: none;">
@@ -118,10 +116,12 @@
                             index + 1
                         }}</span>
                       <div style="display:inline-block;line-height: 120%;text-align: center;width:70px;"><el-image
-                          class="flag" :src="item.FlagA" fit="contain" /> <br /> {{ item.TeamA_name }}</div>
+                          class="flag" :src="item.FlagA" fit="contain" /> <br /> {{ teamNameLang(item.TeamA_name) }}
+                      </div>
                       <span class="vs">vs</span>
                       <div style="display:inline-block;line-height: 120%;text-align: center;width:70px;">
-                        <el-image class="flag" :src="item.FlagB" fit="contain" /><br />{{ item.TeamB_name }}
+                        <el-image class="flag" :src="item.FlagB" fit="contain" /><br />{{ teamNameLang(item.TeamB_name)
+                        }}
                       </div>
                       <span class="score"> {{ item.ScoreA }}:{{ item.ScoreB }}</span>
                     </li>
@@ -131,8 +131,7 @@
             </div>
           </div>
           <div class="main-right">
-            <div class="content_title"><img
-                src="https://cndevdemo.oss-cn-shanghai.aliyuncs.com/fifa/title_schedule.png">
+            <div class="content_title"><img :src="pics.schedule">
             </div>
             <div class="content_schedule"><img src="https://cndevdemo.oss-cn-shanghai.aliyuncs.com/fifa/schedule.png">
             </div>
@@ -144,7 +143,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import { UserChipIn, GetHomeChipList, GetPicList, GetGameList } from "@/services/kintoneApi"
 import {
   matchInfoField,
@@ -152,12 +151,20 @@ import {
 } from "@/config";
 import { DateTime } from 'luxon'
 import { useStore } from '@/store/store'
-import { lang } from "@/i18n.js"
+import { lang, teamsLang } from "@/i18n.js"
+
 const { language } = kintone.getLoginUser();
 const lan = ref(lang[language])
 const store = useStore();
 const typeMapping = { "sheng": "Awin", "fu": "Bwin", "ping": "draw" }
-
+const preUrl = "https://cndevdemo.oss-cn-shanghai.aliyuncs.com/fifa/"
+const pics = reactive({
+  logo: `${preUrl}logo_${language}.png`,
+  news: `${preUrl}title_headlines_news_${language}.png`,
+  integral: `${preUrl}title_integral_${language}.png`,
+  schedule: `${preUrl}title_schedule_${language}.png`,
+  vote: `${preUrl}title_vote_${language}.png`,
+})
 const chipInList = ref([])
 const input = ref(10)
 const picList = ref([])
@@ -181,6 +188,14 @@ GetGameList().then((resp) => {
   // console.log(resp)
   gameList.value = resp
 })
+
+const teamNameLang = (name) => {
+  if (language !== 'en') {
+    return teamsLang[language][name]
+  }
+  return name
+}
+
 
 const closePop = (item) => {
   Object.keys(typeMapping).forEach((i) => {

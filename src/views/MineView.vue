@@ -11,7 +11,7 @@
           <el-table-column :label="lan.matchId" width="180">
             <template #default="scope">
               <div style="display: flex; align-items: center">
-                {{ scope.row.teamInfo.TeamA_name }} vs{{ scope.row.teamInfo.TeamB_name }}
+                {{ teamNameLang(scope.row.teamInfo.TeamA_name) }} vs{{ teamNameLang(scope.row.teamInfo.TeamB_name) }}
               </div>
             </template>
           </el-table-column>
@@ -27,13 +27,18 @@
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useStore } from '@/store/store'
-import { lang } from "@/i18n.js"
+import { lang, teamsLang } from "@/i18n.js"
 const store = useStore();
 const { myScore, chipListShow } = storeToRefs(store)
 const { language } = kintone.getLoginUser();
 
 const lan = ref(lang[language])
-
+const teamNameLang = (name) => {
+  if (language !== 'en') {
+    return teamsLang[language][name]
+  }
+  return name
+}
 // eslint-disable-next-line no-undef
 
 </script>
