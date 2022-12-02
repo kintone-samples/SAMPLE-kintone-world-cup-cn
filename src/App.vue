@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <!-- <el-main> -->
-    <el-tabs type="border-card" v-model="activeName" class="demo-tabs" @tab-click="handleClick">
+    <el-tabs type="border-card" v-model="activeName" class="demo-tabs" @tab-change="handleClick">
       <el-tab-pane label="世界杯" name="home">
         <home />
       </el-tab-pane>
@@ -20,10 +20,28 @@ import { useUserStore } from '@/store/user'
 const userStore = useUserStore();
 userStore.init()
 
+const hidden = (type) => {
+  if (type === 'hidden') {
+    document.getElementsByClassName("ocean-portal-body-left")[0].style.display = "none";
+    document.getElementsByClassName("ocean-portal-body-right")[0].style.display = "none";
+  }
+  else {
+    document.getElementsByClassName("ocean-portal-body-left")[0].style.display = "block";
+    document.getElementsByClassName("ocean-portal-body-right")[0].style.display = "block";
+  }
+
+}
+hidden('hidden')
 
 const activeName = ref('home')
-const handleClick = (tab, event) => {
+const handleClick = (tab) => {
   // console.log(tab, event)
+  if (tab === 'home') {
+    hidden('hidden')
+  }
+  else {
+    hidden('show')
+  }
 }
 </script>
 <style>
