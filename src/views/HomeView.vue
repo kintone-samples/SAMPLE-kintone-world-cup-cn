@@ -1,18 +1,19 @@
 <template>
   <div class="common-layout">
+    <el-alert v-if="error" :title="errorTitle" type="error" effect="dark" @close="handleClose()" />
     <div class="container">
       <div class="home">
         <header class="top">
           <div class="top_left">
             <img src="https://cndevdemo.oss-cn-shanghai.aliyuncs.com/fifa/logo.png">
-            <div class="top_time">比赛时间：11月21日-12月18日</div>
+            <div class="top_time">{{ lan.matchTime }}</div>
             <div class="top_countdown">
               <div>
-                <span class="top_countdown_title ">世界杯比赛第
+                <span class="top_countdown_title ">{{ lan.matchDay }}
                   <span class="countline-single-num">
                     <span class="countline-num">{{ diffDays }}</span>
                   </span>
-                  天</span>
+                  {{ lan.day }}</span>
               </div>
             </div>
           </div>
@@ -38,51 +39,53 @@
                             item.TeamB_name
                         }}</div>
                   </el-col>
-                  <!-- <el-col :span="2">胜赔率{{ item.OddsA }}</el-col>
-        <el-col :span="2">平赔率{{ item.OddsB }}</el-col>
-        <el-col :span="2">负赔率{{ item.OddsC }}</el-col> -->
                   <el-col :span="10">
-                    <div class="voted" v-if="item.userChipInList.chipInScore"><span>已投注</span></div>
-                    <div class="voted" v-else-if="item.isExpire"><span>已过期</span></div>
+                    <div class="voted" v-if="item.userChipInList.chipInScore"><span>{{ lan.voted }}</span></div>
+                    <div class="voted" v-else-if="item.isExpire"><span>{{ lan.expired }}</span></div>
                     <div v-else>
                       <el-popover :visible="item.userChipInList.chipInShow.sheng" placement="top" :width="180"
                         trigger="click">
-                        <p>押注：</p>
+                        <p>{{ lan.score }}</p>
                         <div style="text-align: right;line-height: 200%; margin: 0">
                           <el-input v-model="input" type="number" />
-                          <el-button size="small" text @click="closePop(item)">取消</el-button>
-                          <el-button size="small" type="primary" @click="handle(item, 'sheng')">确认</el-button>
+                          <el-button size="small" text @click="closePop(item)">{{ lan.cancel }}</el-button>
+                          <el-button size="small" type="primary" @click="handle(item, 'sheng')">{{ lan.confirm
+                          }}</el-button>
                         </div>
                         <template #reference>
-                          <el-button type="" @click="showPop(item, 'sheng')">胜<br /><span class="odds">：{{
+                          <el-button type="" @click="showPop(item, 'sheng')">{{ lan.win }}<br /><span class="odds">：{{
                               item.OddsA
                           }}</span></el-button>
                         </template>
                       </el-popover>
                       <el-popover :visible="item.userChipInList.chipInShow.ping" placement="top" :width="180"
                         trigger="click">
-                        <p>押注：</p>
+                        <p>{{ lan.score }}</p>
                         <div style="text-align: right;line-height: 200%;  margin: 0">
                           <el-input v-model="input" type="number" />
-                          <el-button size="small" text @click="closePop(item)">取消</el-button>
-                          <el-button size="small" type="primary" @click="handle(item, 'ping')">确认</el-button>
+                          <el-button size="small" text @click="closePop(item)">{{ lan.cancel }}</el-button>
+                          <el-button size="small" type="primary" @click="handle(item, 'ping')">{{
+                              lan.confirm
+                          }}</el-button>
                         </div>
                         <template #reference>
-                          <el-button @click="showPop(item, 'ping')">平<br /><span class="odds">：{{
+                          <el-button @click="showPop(item, 'ping')">{{ lan.draw }}<br /><span class="odds">：{{
                               item.OddsC
                           }}</span></el-button>
                         </template>
                       </el-popover>
                       <el-popover :visible="item.userChipInList.chipInShow.fu" placement="top" :width="180"
                         trigger="click">
-                        <p>押注：</p>
+                        <p>{{ lan.score }}</p>
                         <div style="text-align: right;line-height: 200%;  margin: 0">
                           <el-input v-model="input" type="number" />
-                          <el-button size="small" text @click="closePop(item)">取消</el-button>
-                          <el-button size="small" type="primary" @click="handle(item, 'fu')">确认</el-button>
+                          <el-button size="small" text @click="closePop(item)">{{ lan.cancel }}</el-button>
+                          <el-button size="small" type="primary" @click="handle(item, 'fu')">{{
+                              lan.confirm
+                          }}</el-button>
                         </div>
                         <template #reference>
-                          <el-button @click="showPop(item, 'fu')">负<br /><span class="odds">：{{ item.OddsB
+                          <el-button @click="showPop(item, 'fu')">{{ lan.loss }}<br /><span class="odds">：{{ item.OddsB
                           }}</span></el-button>
                         </template>
                       </el-popover>
@@ -124,9 +127,6 @@
                     </li>
                   </ul>
                 </div>
-                <!-- <div class="content_title"><img src="https://cndevdemo.oss-cn-shanghai.aliyuncs.com/fifa/title_schedule.png">
-      </div>
-      <div class="content_schedule"><img src="https://cndevdemo.oss-cn-shanghai.aliyuncs.com/fifa/schedule.png"></div> -->
               </div>
             </div>
           </div>
@@ -151,14 +151,23 @@ import {
   userChipInField,
 } from "@/config";
 import { DateTime } from 'luxon'
-import { useUserStore } from '@/store/user'
-const userStore = useUserStore();
-const typeMapping = { "sheng": "A胜B", "fu": "A负B", "ping": "A平B" }
+import { useStore } from '@/store/store'
+import { lang } from "@/i18n.js"
+const { language } = kintone.getLoginUser();
+const lan = ref(lang[language])
+const store = useStore();
+const typeMapping = { "sheng": "Awin", "fu": "Bwin", "ping": "draw" }
 
 const chipInList = ref([])
 const input = ref(10)
 const picList = ref([])
 const gameList = ref([])
+const error = ref(false)
+const errorTitle = ref('')
+
+const handleClose = () => {
+  error.value = false
+}
 
 GetHomeChipList().then((resp) => {
   chipInList.value = resp
@@ -169,7 +178,7 @@ GetPicList().then((resp) => {
 })
 
 GetGameList().then((resp) => {
-  console.log(resp)
+  // console.log(resp)
   gameList.value = resp
 })
 
@@ -204,7 +213,8 @@ const handle = async (item, type) => {
 
   const deadLineString = DateTime.fromISO(deadLine).toUnixInteger()
   if (deadLineString < localRef.value) {
-    alert("超过时间")
+    errorTitle.value = lang[language].overTime
+    error.value = true
     return
   }
   const params = {
@@ -215,20 +225,25 @@ const handle = async (item, type) => {
   if (input.value) {
     UserChipIn(params).then(async (r) => {
       if (r) {
-        userStore.getLeftScore()
-        userStore.getChipInList()
+        store.getLeftScore()
+        store.getChipInList()
         GetHomeChipList().then((resp) => {
           chipInList.value = resp
         })
       }
       else {
-        alert("积分不够")
+        errorTitle.value = lang[language].noScore
+        error.value = true
       }
     })
   }
 }
 </script>
 <style>
+.el-alert {
+  margin: 20px 0 0;
+}
+
 .common-layout {
   margin: 0;
   background-image: url('https://cndevdemo.oss-cn-shanghai.aliyuncs.com/fifa/bg.png');

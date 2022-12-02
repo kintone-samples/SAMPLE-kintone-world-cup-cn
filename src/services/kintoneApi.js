@@ -86,7 +86,7 @@ export const GetHomeChipList = async () => {
   const chipInapp = appList.userChipIn;
   const params = {
     app,
-    query: `${matchInfoField.Show} in ("展示")`,
+    query: `${matchInfoField.Show} in ("show")`,
   };
   const { records } = await client.record.getRecords(params);
   const newRecords = records.map((record) => {
@@ -172,7 +172,7 @@ export const GetPicList = async () => {
   try {
     const params = {
       app,
-      query: `${picField.Show} in ("显示")`,
+      query: `${picField.Show} in ("show")`,
     };
     const resp = await client.record.getRecords(params);
     if (resp.records.length > 0) {
@@ -195,7 +195,7 @@ export const GetGameList = async () => {
       app,
       query: `${matchInfoField.ScoreA} !="" limit 4`,
     };
-    console.log(params);
+    // console.log(params);
     const resp = await client.record.getRecords(params);
     if (resp.records.length > 0) {
       return resp.records.map((record) => {

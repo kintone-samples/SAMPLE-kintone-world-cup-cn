@@ -5,7 +5,7 @@ import {
 } from "@/services/kintoneApi";
 import { defineStore } from "pinia";
 
-export const useUserStore = defineStore("user", {
+export const useStore = defineStore("store", {
   state: () => {
     return {
       myScore: 0,

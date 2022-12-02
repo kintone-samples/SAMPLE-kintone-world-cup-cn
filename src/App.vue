@@ -2,10 +2,10 @@
   <div class="main">
     <!-- <el-main> -->
     <el-tabs type="border-card" v-model="activeName" class="demo-tabs" @tab-change="handleClick">
-      <el-tab-pane label="世界杯" name="home">
+      <el-tab-pane :label="lan.worldCpu" name="home">
         <home />
       </el-tab-pane>
-      <el-tab-pane label="我的信息" name="mine">
+      <el-tab-pane :label="lan.personInfo" name="mine">
         <mine />
       </el-tab-pane>
     </el-tabs>
@@ -16,31 +16,36 @@
 import { ref } from 'vue'
 import home from "@/views/HomeView.vue"
 import mine from "@/views/MineView.vue"
-import { useUserStore } from '@/store/user'
-const userStore = useUserStore();
-userStore.init()
+import { useStore } from '@/store/store'
+import { lang } from "@/i18n.js"
+const { language } = kintone.getLoginUser();
+const lan = ref(lang[language])
+const store = useStore();
+store.init()
 
-const hidden = (type) => {
+const displayFlag = (type) => {
+  let value = 'block'
   if (type === 'hidden') {
-    document.getElementsByClassName("ocean-portal-body-left")[0].style.display = "none";
-    document.getElementsByClassName("ocean-portal-body-right")[0].style.display = "none";
+    value = "none"
   }
-  else {
-    document.getElementsByClassName("ocean-portal-body-left")[0].style.display = "block";
-    document.getElementsByClassName("ocean-portal-body-right")[0].style.display = "block";
-  }
-
+  document.getElementsByClassName("ocean-portal-body-left")[0].style.display = value;
+  document.getElementsByClassName("ocean-portal-body-right")[0].style.display = value;
 }
-hidden('hidden')
+
+//延时执行，防止通知出现显示样式问题
+setTimeout(function () {
+  displayFlag('hidden')
+}, 1000);
+
 
 const activeName = ref('home')
 const handleClick = (tab) => {
   // console.log(tab, event)
   if (tab === 'home') {
-    hidden('hidden')
+    displayFlag('hidden')
   }
   else {
-    hidden('show')
+    displayFlag('show')
   }
 }
 </script>
