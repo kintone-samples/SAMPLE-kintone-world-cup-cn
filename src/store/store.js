@@ -19,11 +19,11 @@ export const useStore = defineStore("store", {
         record.scoreChange = record.Score_result;
         if (record.Score_result == 0) {
           record.scoreChange = Number(record.Chip_in_score) * -1;
-          record.type = "下注";
+          record.type = "chip in";
         } else if (record.Score_result < 0) {
-          record.type = "下注";
+          record.type = "chip in";
         } else {
-          record.type = "赢得";
+          record.type = "win";
         }
         return record;
       });

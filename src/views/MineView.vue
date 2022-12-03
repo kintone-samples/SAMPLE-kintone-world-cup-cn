@@ -7,11 +7,16 @@
           style="background-image: url('https://static.cybozu.com/contents/k/image/argo/uiparts/widget/spaces_56.png'); background-position: left top; background-repeat: no-repeat;">
           <h3 class="gaia-argoui-widget-title">{{ lan.scoreList }}</h3>
         </div>
-        <el-table :data="chipListShow" stripe style="width: 50%" max-height="800">
-          <el-table-column :label="lan.matchId" width="180">
+        <el-table :data="chipListShow" stripe style="width: 50%">
+          <el-table-column :label="lan.matchId" width="500">
             <template #default="scope">
               <div style="display: flex; align-items: center">
-                {{ teamNameLang(scope.row.teamInfo.TeamA_name) }} vs{{ teamNameLang(scope.row.teamInfo.TeamB_name) }}
+                <el-image class="flag" :src="scope.row.teamInfo.FlagA" fit="contain" /><span class="team_name">{{
+                    teamNameLang(scope.row.teamInfo.TeamA_name)
+                }}</span> <span class="vs">vs</span> <el-image class="flag" :src="scope.row.teamInfo.FlagB"
+                  fit="contain" /><span class="team_name">{{
+                      teamNameLang(scope.row.teamInfo.TeamB_name)
+                  }}</span>
               </div>
             </template>
           </el-table-column>
@@ -50,5 +55,25 @@ const teamNameLang = (name) => {
 
 .myscore span {
   color: #fe421d
+}
+
+.flag {
+  line-height: 100%;
+}
+
+.flag img {
+  width: 40px;
+  /* border-radius: 5px; */
+}
+
+.team_name {
+  /* width: 150px; */
+  font-weight: 700;
+  display: inline-block;
+  margin: 10px;
+}
+
+.vs {
+  font-size: 18px
 }
 </style>

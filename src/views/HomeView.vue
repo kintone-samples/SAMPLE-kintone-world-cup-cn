@@ -26,19 +26,21 @@
               </div>
               <div class="content_vote_bg">
                 <el-scrollbar always>
-                  <el-row class="content_vote" :gutter="20" v-for="item in chipInList" :key="item.Match_id">
-                    <el-col :span="1"></el-col>
+                  <el-row class="content_vote" :gutter="10" v-for="item in chipInList" :key="item.Match_id">
+                    <!-- <el-col :span="1"></el-col> -->
                     <el-col class="match_time" :span="5">{{ item.Match_start_time }}</el-col>
-                    <el-col :span="8">
-                      <div style="display:inline-block;line-height: 120%;text-align: center;width:70px;">
-                        <el-image class="flag" :src="item.FlagA" fit="contain" /><br />{{
-                            teamNameLang(item.TeamA_name)
-                        }}
+                    <el-col :span="9">
+                      <div style="display:inline-block;line-height: 120%;text-align: center;width:30%">
+                        <el-image class="flag" :src="item.FlagA" fit="contain" /><br /><span
+                          :style="teamNameFontSize(teamNameLang(item.TeamA_name))">{{
+                              teamNameLang(item.TeamA_name)
+                          }}</span>
                       </div> <span class="vote_vs">vs</span>
-                      <div style="display:inline-block;line-height: 120%;text-align: center;width:70px;"><el-image
-                          class="flag" :src="item.FlagB" fit="contain" /><br />{{
-                              teamNameLang(item.TeamB_name)
-                          }}</div>
+                      <div style="display:inline-block;line-height: 120%;text-align: center;width:30%;"><el-image
+                          class="flag" :src="item.FlagB" fit="contain" /><br />
+                        <span :style="teamNameFontSize(teamNameLang(item.TeamB_name))">{{ teamNameLang(item.TeamB_name)
+                        }}</span>
+                      </div>
                     </el-col>
                     <el-col :span="10">
                       <div class="voted" v-if="item.userChipInList.chipInScore"><span>{{ lan.voted }}</span></div>
@@ -112,22 +114,28 @@
                 <div class="content_title"><img :src="pics.integral">
                 </div>
                 <div class="content_integral">
-                  <ul style="padding:0;margin:0;text-align: left;list-style-type: none;">
-                    <li style="height:50px;padding:13px 0;" v-for="(item, index) in gameList" :key="item.$id"><span
-                        class="team-order">{{
-                            index + 1
-                        }}</span>
-                      <div style="display:inline-block;line-height: 120%;text-align: center;width:70px;"><el-image
-                          class="flag" :src="item.FlagA" fit="contain" /> <br /> {{ teamNameLang(item.TeamA_name) }}
-                      </div>
-                      <span class="vs">vs</span>
-                      <div style="display:inline-block;line-height: 120%;text-align: center;width:70px;">
-                        <el-image class="flag" :src="item.FlagB" fit="contain" /><br />{{ teamNameLang(item.TeamB_name)
-                        }}
-                      </div>
-                      <span class="score"> {{ item.ScoreA }}:{{ item.ScoreB }}</span>
-                    </li>
-                  </ul>
+                  <el-scrollbar>
+                    <el-row v-for="(item, index) in gameList" :key="item.$id" class="game_list">
+                      <el-col :span="3"><span class="team-order">{{
+                          index + 1
+                      }}</span></el-col>
+                      <el-col :span="16">
+                        <el-row class="vs_item">
+                          <el-col :span="8" style="text-align: center;"><el-image class="flag" :src="item.FlagA"
+                              fit="contain" /> <br />
+                            <span :style="teamNameFontSizeScore(teamNameLang(item.TeamA_name))">{{
+                                teamNameLang(item.TeamA_name)
+                            }}</span></el-col>
+                          <el-col :span="8"><span class="vs">vs</span></el-col>
+                          <el-col :span="8"><el-image class="flag" :src="item.FlagB" fit="contain" /><br /><span
+                              :style="teamNameFontSizeScore(teamNameLang(item.TeamB_name))">{{
+                                  teamNameLang(item.TeamB_name)
+                              }}</span></el-col>
+                        </el-row>
+                      </el-col>
+                      <el-col :span="5"> <span class="score">{{ item.ScoreA }}:{{ item.ScoreB }}</span></el-col>
+                    </el-row>
+                  </el-scrollbar>
                 </div>
               </div>
             </div>
@@ -198,6 +206,47 @@ const teamNameLang = (name) => {
   return name
 }
 
+const teamNameFontSize = (name) => {
+  if (language === 'ja') {
+    if (name.length > 4 && name.length < 6) {
+      return "font-size:15px"
+    }
+    if (name.length > 5) {
+      return "font-size:10px"
+    }
+    return "font-size:18px"
+  }
+  else if (language === 'en') {
+    if (name.length > 8) {
+      return "font-size:15px"
+    }
+    return "font-size:18px"
+  }
+  else {
+    return "font-size:18px"
+  }
+}
+
+const teamNameFontSizeScore = (name) => {
+  if (language === 'ja') {
+    if (name.length > 4 && name.length < 6) {
+      return "font-size:12px"
+    }
+    if (name.length > 5) {
+      return "font-size:8px"
+    }
+    return "font-size:15px"
+  }
+  else if (language === 'en') {
+    if (name.length > 8) {
+      return "font-size:12px"
+    }
+    return "font-size:15px"
+  }
+  else {
+    return "font-size:15px"
+  }
+}
 
 const closePop = (item) => {
   Object.keys(typeMapping).forEach((i) => {
@@ -387,6 +436,7 @@ const handle = async (item, type) => {
   margin: 0 auto;
   padding: 0 20px;
   width: 70%;
+  height: 300px;
   border-radius: 10px;
   color: #fff;
   background: rgba(6, 50, 138, 0.6);
@@ -409,7 +459,6 @@ const handle = async (item, type) => {
   font-weight: 900;
   text-align: left;
   color: #fe7873;
-  padding: 0 10px;
   line-height: 180%;
   vertical-align: top;
 }
@@ -475,7 +524,6 @@ const handle = async (item, type) => {
 
 .vs {
   font-size: 30px;
-  font-weight: 900;
   line-height: 120%;
   padding: 0 10px;
   vertical-align: top;
@@ -550,8 +598,8 @@ const handle = async (item, type) => {
   font-size: 24px;
   font-weight: 900;
   line-height: 150%;
-  padding: 0 10px;
-  vertical-align: top;
+  display: inline-block;
+  padding: 0 0 0 15px;
 }
 
 .left_side {
@@ -566,7 +614,20 @@ const handle = async (item, type) => {
 
 .match_time {
   width: 100px;
-  font-size: 22px;
-  text-align: left;
+  font-size: 20px;
+  text-align: center;
+}
+
+.integral_row {
+  margin: 0;
+  padding: 0;
+}
+
+.game_list {
+  height: 50px;
+}
+
+.vs_item {
+  margin: 0;
 }
 </style>
