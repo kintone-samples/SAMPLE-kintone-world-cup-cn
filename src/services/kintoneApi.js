@@ -193,6 +193,7 @@ export const GetGameList = async () => {
   try {
     const params = {
       app,
+      // query: `limit 4`,
       query: `${matchInfoField.ScoreA} !="" limit 4`,
     };
     // console.log(params);

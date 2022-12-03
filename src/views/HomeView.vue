@@ -25,74 +25,76 @@
               <div class="content_title"><img :src="pics.vote">
               </div>
               <div class="content_vote_bg">
-                <el-row class="content_vote" :gutter="20" v-for="item in chipInList" :key="item.Match_id">
-                  <el-col :span="1"></el-col>
-                  <el-col class="match_time" :span="5">{{ item.Match_start_time }}</el-col>
-                  <el-col :span="8">
-                    <div style="display:inline-block;line-height: 120%;text-align: center;width:70px;">
-                      <el-image class="flag" :src="item.FlagA" fit="contain" /><br />{{
-                          teamNameLang(item.TeamA_name)
-                      }}
-                    </div> <span class="vote_vs">vs</span>
-                    <div style="display:inline-block;line-height: 120%;text-align: center;width:70px;"><el-image
-                        class="flag" :src="item.FlagB" fit="contain" /><br />{{
-                            teamNameLang(item.TeamB_name)
-                        }}</div>
-                  </el-col>
-                  <el-col :span="10">
-                    <div class="voted" v-if="item.userChipInList.chipInScore"><span>{{ lan.voted }}</span></div>
-                    <div class="voted" v-else-if="item.isExpire"><span>{{ lan.expired }}</span></div>
-                    <div v-else>
-                      <el-popover :visible="item.userChipInList.chipInShow.sheng" placement="top" :width="180"
-                        trigger="click">
-                        <p>{{ lan.score }}</p>
-                        <div style="text-align: right;line-height: 200%; margin: 0">
-                          <el-input v-model="input" type="number" />
-                          <el-button size="small" text @click="closePop(item)">{{ lan.cancel }}</el-button>
-                          <el-button size="small" type="primary" @click="handle(item, 'sheng')">{{ lan.confirm
-                          }}</el-button>
-                        </div>
-                        <template #reference>
-                          <el-button type="" @click="showPop(item, 'sheng')">{{ lan.win }}<span class="odds">:{{
-                              item.OddsA
-                          }}</span></el-button>
-                        </template>
-                      </el-popover>
-                      <el-popover :visible="item.userChipInList.chipInShow.ping" placement="top" :width="180"
-                        trigger="click">
-                        <p>{{ lan.score }}</p>
-                        <div style="text-align: right;line-height: 200%;  margin: 0">
-                          <el-input v-model="input" type="number" />
-                          <el-button size="small" text @click="closePop(item)">{{ lan.cancel }}</el-button>
-                          <el-button size="small" type="primary" @click="handle(item, 'ping')">{{
-                              lan.confirm
-                          }}</el-button>
-                        </div>
-                        <template #reference>
-                          <el-button @click="showPop(item, 'ping')">{{ lan.draw }}<span class="odds">:{{
-                              item.OddsC
-                          }}</span></el-button>
-                        </template>
-                      </el-popover>
-                      <el-popover :visible="item.userChipInList.chipInShow.fu" placement="top" :width="180"
-                        trigger="click">
-                        <p>{{ lan.score }}</p>
-                        <div style="text-align: right;line-height: 200%;  margin: 0">
-                          <el-input v-model="input" type="number" />
-                          <el-button size="small" text @click="closePop(item)">{{ lan.cancel }}</el-button>
-                          <el-button size="small" type="primary" @click="handle(item, 'fu')">{{
-                              lan.confirm
-                          }}</el-button>
-                        </div>
-                        <template #reference>
-                          <el-button @click="showPop(item, 'fu')">{{ lan.loss }}<span class="odds">:{{ item.OddsB
-                          }}</span></el-button>
-                        </template>
-                      </el-popover>
-                    </div>
-                  </el-col>
-                  <el-col :span="1"></el-col>
-                </el-row>
+                <el-scrollbar always>
+                  <el-row class="content_vote" :gutter="20" v-for="item in chipInList" :key="item.Match_id">
+                    <el-col :span="1"></el-col>
+                    <el-col class="match_time" :span="5">{{ item.Match_start_time }}</el-col>
+                    <el-col :span="8">
+                      <div style="display:inline-block;line-height: 120%;text-align: center;width:70px;">
+                        <el-image class="flag" :src="item.FlagA" fit="contain" /><br />{{
+                            teamNameLang(item.TeamA_name)
+                        }}
+                      </div> <span class="vote_vs">vs</span>
+                      <div style="display:inline-block;line-height: 120%;text-align: center;width:70px;"><el-image
+                          class="flag" :src="item.FlagB" fit="contain" /><br />{{
+                              teamNameLang(item.TeamB_name)
+                          }}</div>
+                    </el-col>
+                    <el-col :span="10">
+                      <div class="voted" v-if="item.userChipInList.chipInScore"><span>{{ lan.voted }}</span></div>
+                      <div class="voted" v-else-if="item.isExpire"><span>{{ lan.expired }}</span></div>
+                      <div v-else>
+                        <el-popover :visible="item.userChipInList.chipInShow.sheng" placement="top" :width="180"
+                          trigger="click">
+                          <p>{{ lan.score }}</p>
+                          <div style="text-align: right;line-height: 200%; margin: 0">
+                            <el-input v-model="input" type="number" />
+                            <el-button size="small" text @click="closePop(item)">{{ lan.cancel }}</el-button>
+                            <el-button size="small" type="primary" @click="handle(item, 'sheng')">{{ lan.confirm
+                            }}</el-button>
+                          </div>
+                          <template #reference>
+                            <el-button type="" @click="showPop(item, 'sheng')">{{ lan.win }}<span class="odds">:{{
+                                item.OddsA
+                            }}</span></el-button>
+                          </template>
+                        </el-popover>
+                        <el-popover :visible="item.userChipInList.chipInShow.ping" placement="top" :width="180"
+                          trigger="click">
+                          <p>{{ lan.score }}</p>
+                          <div style="text-align: right;line-height: 200%;  margin: 0">
+                            <el-input v-model="input" type="number" />
+                            <el-button size="small" text @click="closePop(item)">{{ lan.cancel }}</el-button>
+                            <el-button size="small" type="primary" @click="handle(item, 'ping')">{{
+                                lan.confirm
+                            }}</el-button>
+                          </div>
+                          <template #reference>
+                            <el-button @click="showPop(item, 'ping')">{{ lan.draw }}<span class="odds">:{{
+                                item.OddsC
+                            }}</span></el-button>
+                          </template>
+                        </el-popover>
+                        <el-popover :visible="item.userChipInList.chipInShow.fu" placement="top" :width="180"
+                          trigger="click">
+                          <p>{{ lan.score }}</p>
+                          <div style="text-align: right;line-height: 200%;  margin: 0">
+                            <el-input v-model="input" type="number" />
+                            <el-button size="small" text @click="closePop(item)">{{ lan.cancel }}</el-button>
+                            <el-button size="small" type="primary" @click="handle(item, 'fu')">{{
+                                lan.confirm
+                            }}</el-button>
+                          </div>
+                          <template #reference>
+                            <el-button @click="showPop(item, 'fu')">{{ lan.loss }}<span class="odds">:{{ item.OddsB
+                            }}</span></el-button>
+                          </template>
+                        </el-popover>
+                      </div>
+                    </el-col>
+                    <el-col :span="1"></el-col>
+                  </el-row>
+                </el-scrollbar>
               </div>
             </div>
 
@@ -216,10 +218,8 @@ const showPop = (item, type) => {
 
 const localRef = ref(DateTime.local().toUnixInteger())
 
-
-const end = DateTime.local()
 const start = DateTime.fromISO('2022-11-21');
-const diffDays = ref(Math.round(end.diff(start, 'days').values.days));
+const diffDays = ref(Math.ceil(Math.abs(start.diffNow('days').values.days)));
 
 
 const handle = async (item, type) => {
