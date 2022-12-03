@@ -194,7 +194,7 @@ export const GetGameList = async () => {
     const params = {
       app,
       // query: `limit 4`,
-      query: `${matchInfoField.ScoreA} !=""`,
+      query: `${matchInfoField.ScoreA} !="" order by ${matchInfoField.Match_start_time} desc`,
     };
     // console.log(params);
     const resp = await client.record.getRecords(params);

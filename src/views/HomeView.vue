@@ -27,7 +27,6 @@
               <div class="content_vote_bg">
                 <el-scrollbar always>
                   <el-row class="content_vote" :gutter="10" v-for="item in chipInList" :key="item.Match_id">
-                    <!-- <el-col :span="1"></el-col> -->
                     <el-col class="match_time" :span="5">{{ item.Match_start_time }}</el-col>
                     <el-col :span="9">
                       <div style="display:inline-block;line-height: 120%;text-align: center;width:30%">
@@ -56,9 +55,10 @@
                             }}</el-button>
                           </div>
                           <template #reference>
-                            <el-button type="" @click="showPop(item, 'sheng')">{{ lan.win }}<span class="odds">:{{
-                                item.OddsA
-                            }}</span></el-button>
+                            <el-button class="chipin_button" @click="showPop(item, 'sheng')">{{ lan.win }}<span
+                                class="odds">:{{
+                                    item.OddsA
+                                }}</span></el-button>
                           </template>
                         </el-popover>
                         <el-popover :visible="item.userChipInList.chipInShow.ping" placement="top" :width="180"
@@ -72,9 +72,10 @@
                             }}</el-button>
                           </div>
                           <template #reference>
-                            <el-button @click="showPop(item, 'ping')">{{ lan.draw }}<span class="odds">:{{
-                                item.OddsC
-                            }}</span></el-button>
+                            <el-button class="chipin_button" @click="showPop(item, 'ping')">{{ lan.draw }}<span
+                                class="odds">:{{
+                                    item.OddsC
+                                }}</span></el-button>
                           </template>
                         </el-popover>
                         <el-popover :visible="item.userChipInList.chipInShow.fu" placement="top" :width="180"
@@ -88,8 +89,9 @@
                             }}</el-button>
                           </div>
                           <template #reference>
-                            <el-button @click="showPop(item, 'fu')">{{ lan.loss }}<span class="odds">:{{ item.OddsB
-                            }}</span></el-button>
+                            <el-button class="chipin_button" @click="showPop(item, 'fu')">{{ lan.loss }}<span
+                                class="odds">:{{ item.OddsB
+                                }}</span></el-button>
                           </template>
                         </el-popover>
                       </div>
@@ -244,6 +246,9 @@ const teamNameFontSizeScore = (name) => {
     return "font-size:15px"
   }
   else {
+    if (name.length > 4) {
+      return "font-size:12px"
+    }
     return "font-size:15px"
   }
 }
@@ -452,8 +457,8 @@ const handle = async (item, type) => {
 
 .team-order {
   display: inline-block;
-  width: 9px;
-  font-family: baidunumber-Medium;
+  /* width: 9px; */
+  /* font-family: baidunumber-Medium; */
   font-size: 24px;
   letter-spacing: -1.12px;
   font-weight: 900;
