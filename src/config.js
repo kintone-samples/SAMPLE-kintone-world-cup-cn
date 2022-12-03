@@ -24,6 +24,7 @@ export const matchInfoField = {
   ScoreB: "ScoreB",
   Result: "Result",
   Show: "Show",
+  Finish_status: "Finish_status",
 };
 
 export const teamsField = {
@@ -61,4 +62,5 @@ export const scoreField = {
 export const picField = {
   Link: "Link",
   Show: "Show",
+  Sort: "Sort",
 };

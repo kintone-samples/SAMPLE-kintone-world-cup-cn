@@ -7,7 +7,7 @@
           style="background-image: url('https://static.cybozu.com/contents/k/image/argo/uiparts/widget/spaces_56.png'); background-position: left top; background-repeat: no-repeat;">
           <h3 class="gaia-argoui-widget-title">{{ lan.scoreList }}</h3>
         </div>
-        <el-table :data="chipListShow" stripe style="width: 50%">
+        <el-table :data="chipListShow" stripe style="width: 1400px">
           <el-table-column :label="lan.matchId" width="500">
             <template #default="scope">
               <div style="display: flex; align-items: center">
@@ -20,8 +20,17 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="scoreChange" :label="lan.scoreChange" width="180" />
-          <el-table-column prop="type" :label="lan.type" />
+          <el-table-column prop="Chip_in_score" :label="lan.score" width="180" />
+          <el-table-column prop="scoreChange" :label="lan.scoreChange" width="220" />
+          <!-- <el-table-column prop="type" :label="lan.type" /> -->
+
+          <el-table-column :label="lan.type">
+            <template #default="scope">
+              <span :class="scope.row.type">{{ scope.row.type }}</span>
+            </template>
+          </el-table-column>
+
+
         </el-table>
       </div>
     </div>
@@ -75,5 +84,17 @@ const teamNameLang = (name) => {
 
 .vs {
   font-size: 18px
+}
+
+.win {
+  color: red
+}
+
+.loss {
+  color: green
+}
+
+.chip_in {
+  color: green
 }
 </style>

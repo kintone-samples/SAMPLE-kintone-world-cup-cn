@@ -1,6 +1,5 @@
 <template>
   <div class="common-layout">
-    <el-alert v-if="error" :title="errorTitle" type="error" effect="dark" @close="handleClose()" />
     <div class="container">
       <div class="home">
         <header class="top">
@@ -156,6 +155,7 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
+import { ElMessage } from 'element-plus'
 import { UserChipIn, GetHomeChipList, GetPicList, GetGameList } from "@/services/kintoneApi"
 import {
   matchInfoField,
@@ -181,12 +181,6 @@ const chipInList = ref([])
 const input = ref(10)
 const picList = ref([])
 const gameList = ref([])
-const error = ref(false)
-const errorTitle = ref('')
-
-const handleClose = () => {
-  error.value = false
-}
 
 GetHomeChipList().then((resp) => {
   chipInList.value = resp
@@ -282,8 +276,10 @@ const handle = async (item, type) => {
 
   const deadLineString = DateTime.fromISO(deadLine).toUnixInteger()
   if (deadLineString < localRef.value) {
-    errorTitle.value = lang[language].overTime
-    error.value = true
+    ElMessage({
+      message: lang[language].overTime,
+      type: 'error',
+    })
     return
   }
   const params = {
@@ -301,18 +297,16 @@ const handle = async (item, type) => {
         })
       }
       else {
-        errorTitle.value = lang[language].noScore
-        error.value = true
+        ElMessage({
+          message: lang[language].noScore,
+          type: 'error',
+        })
       }
     })
   }
 }
 </script>
 <style>
-.el-alert {
-  margin: 20px 0 0;
-}
-
 .common-layout {
   margin: 0;
   background-image: url('https://cndevdemo.oss-cn-shanghai.aliyuncs.com/fifa/bg.png');

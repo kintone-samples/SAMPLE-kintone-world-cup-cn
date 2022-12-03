@@ -16,13 +16,15 @@ export const useStore = defineStore("store", {
   getters: {
     chipListShow(state) {
       return state.chipInList.map((record) => {
-        record.scoreChange = record.Score_result;
+        // record.scoreChange = record.Score_result;
         if (record.Score_result == 0) {
-          record.scoreChange = Number(record.Chip_in_score) * -1;
+          record.scoreChange = "--";
           record.type = "chip in";
         } else if (record.Score_result < 0) {
-          record.type = "chip in";
+          record.scoreChange = `- ${record.Chip_in_score}`;
+          record.type = "loss";
         } else {
+          record.scoreChange = `- ${record.Chip_in_score} + ${record.Score_result}`;
           record.type = "win";
         }
         return record;

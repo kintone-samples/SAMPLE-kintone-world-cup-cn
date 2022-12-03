@@ -172,7 +172,7 @@ export const GetPicList = async () => {
   try {
     const params = {
       app,
-      query: `${picField.Show} in ("show")`,
+      query: `${picField.Show} in ("show") order by ${picField.Sort}  asc limit 5`,
     };
     const resp = await client.record.getRecords(params);
     if (resp.records.length > 0) {
