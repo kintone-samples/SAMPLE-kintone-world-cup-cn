@@ -17,14 +17,16 @@ export const useStore = defineStore("store", {
     chipListShow(state) {
       return state.chipInList.map((record) => {
         // record.scoreChange = record.Score_result;
+        // const teamWinMaping = {"Awin":}
         if (record.Score_result == 0) {
-          record.scoreChange = "--";
+          record.scoreWin = "--";
+          record.teamInfo.Score = "--";
           record.type = "chip in";
         } else if (record.Score_result < 0) {
-          record.scoreChange = `- ${record.Chip_in_score}`;
+          record.scoreWin = `--`;
           record.type = "loss";
         } else {
-          record.scoreChange = `- ${record.Chip_in_score} + ${record.Score_result}`;
+          record.scoreWin = `+ ${record.Score_result}`;
           record.type = "win";
         }
         return record;
@@ -53,6 +55,7 @@ export const useStore = defineStore("store", {
           FlagB: item.FlagB,
           TeamA_name: item.TeamA_name,
           TeamB_name: item.TeamB_name,
+          Score: `${item.ScoreA}:${item.ScoreB}`,
         };
       }
       chipInList.map((chip) => {

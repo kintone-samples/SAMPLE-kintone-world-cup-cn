@@ -20,17 +20,27 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="Chip_in_score" :label="lan.score" width="180" />
-          <el-table-column prop="scoreChange" :label="lan.scoreChange" width="220" />
-          <!-- <el-table-column prop="type" :label="lan.type" /> -->
-
+          <el-table-column :label="lan.result">
+            <template #default="scope">
+              <span>{{ scope.row.teamInfo.Score }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column :label="lan.myVote">
+            <template #default="scope">
+              <span>{{ voteChange(scope.row.Chip_in_type) }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="Chip_in_score" :label="lan.score" width="180">
+            <template #default="scope">
+              <span> - {{ scope.row.Chip_in_score }} </span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="scoreWin" :label="lan.scoreWin" width="220" />
           <el-table-column :label="lan.type">
             <template #default="scope">
               <span :class="scope.row.type">{{ scope.row.type }}</span>
             </template>
           </el-table-column>
-
-
         </el-table>
       </div>
     </div>
@@ -46,12 +56,22 @@ const store = useStore();
 const { myScore, chipListShow } = storeToRefs(store)
 const { language } = kintone.getLoginUser();
 
+
 const lan = ref(lang[language])
 const teamNameLang = (name) => {
   if (language !== 'en') {
     return teamsLang[language][name]
   }
   return name
+}
+
+const voteChange = (type) => {
+  if (type === 'Awin') { return lang[language].win }
+  else if (type === 'Bwin') { { return lang[language].loss } }
+  else {
+    { return lang[language].draw }
+  }
+
 }
 // eslint-disable-next-line no-undef
 

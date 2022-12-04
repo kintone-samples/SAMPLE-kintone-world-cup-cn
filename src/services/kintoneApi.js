@@ -7,6 +7,7 @@ import {
   picField,
 } from "@/config";
 import { DateTime } from "luxon";
+import math from "@/libs/utils";
 
 const client = new KintoneRestAPIClient();
 
@@ -48,7 +49,11 @@ export const GetFreezeScore = async () => {
     if (resp.records.length > 0) {
       let freezeScore = 0;
       for (let value of resp.records) {
-        freezeScore += Number(value[userChipInField.Chip_in_score].value);
+        freezeScore = math.add(
+          Number(value[userChipInField.Chip_in_score].value),
+          freezeScore
+        );
+        // freezeScore += Number(value[userChipInField.Chip_in_score].value);
       }
       return freezeScore;
     } else {
@@ -136,7 +141,8 @@ export const GetHomeChipList = async () => {
 export const GetLeftScore = async () => {
   const effectiveSocre = await GetEffectiveSocre();
   const freezeScore = await GetFreezeScore();
-  const leftScore = effectiveSocre - freezeScore;
+  const leftScore = math.subtract(effectiveSocre, freezeScore);
+  // console.log("leftScore", leftScore);
   return leftScore;
 };
 
